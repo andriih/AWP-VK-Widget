@@ -54,7 +54,7 @@ class AWP_Vk extends WP_Widget
 			$id = "domain={$this->title}";
 		}
 
-		if(!(int)$this->count ) $this->count = 3;
+		if( !(int)$this->count ) $this->count = 3;
 		$url = "http://api.vk.com/method/wall.get?{$id}&filter=owner&count={$this->count}";
 		$vk_posts = wp_remote_get($url);
 		$vk_posts = json_decode($vk_posts['body']);
@@ -70,7 +70,7 @@ class AWP_Vk extends WP_Widget
 				}
 				elseif( !empty( $item->attachment->photo->src_small ))
 				{
-					$html .= "<div><a href='https://vk.com/{$this->title}'><img src='{$tem->attachment->photo->src_small}'' alt='' /></div>";
+					$html .= "<div><a href='https://vk.com/{$this->title}'><img src='{$item->attachment->photo->src_small}'' alt='' /></div>";
 				}
 			}
 		$html .= '</div>';
