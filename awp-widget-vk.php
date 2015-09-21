@@ -19,8 +19,6 @@ class AWP_Vk extends WP_Widget
 {
 	public $title , $count ;
 
-
-
 	function __construct ()
 	{
 		$args = array(
@@ -36,7 +34,7 @@ class AWP_Vk extends WP_Widget
 		extract($args);
 		extract($instance);
 		$title = 'andrii.hnatyshyn';
-		$count = 3;
+		$count = 5;
 
 		$this->title = $title;
 		$this->count = $count;
@@ -66,7 +64,8 @@ class AWP_Vk extends WP_Widget
 			{
 				if( !empty( $item->text ))
 				{
-					$html .= "<div><a href='https://vk.com/{$this->title}'>{$item->text}</div>";
+					$text = $this->awp_substr($item->text);
+					$html .= "<div><a href='https://vk.com/{$this->title}'>{$text}</div>";
 				}
 				elseif( !empty( $item->attachment->photo->src_small ))
 				{
@@ -76,5 +75,18 @@ class AWP_Vk extends WP_Widget
 		$html .= '</div>';
 
 		return $html;
+	}
+
+	private function awp_substr ( $str )
+	{
+		$str_arr  = explode(' ', $str);
+		$str_arr2 = array_slice( $str_arr,0,3 );
+		$str      = implode(' ', $str_arr2);
+
+		if(count($str_arr) > 3 )
+		{
+			$str .= "..."; 
+		}
+		return $str;
 	}
 }
