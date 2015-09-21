@@ -35,25 +35,46 @@ class AWP_Vk extends WP_Widget
 	{
 		extract($args);
 		extract($instance);
-		$title = '1234354';
+		$title = 'andrii.hnatyshyn';
 		$count = 3;
 
 		$this->title = $title;
 		$this->count = $count;
 
 		$data = $this->awp_get_posts_vk();
-		var_dump($data);
+		echo($data);
 	}
 
 	private function awp_get_posts_vk()
 	{
 		if(is_numeric($this->title) ){
 			$id = "owner_id={$this->title}";
+			$this->title = "id{$this->title}";
 		}else{
 			$id = "domain={$this->title}";
 		}
 
 		if(!(int)$this->count ) $this->count = 3;
-		return $url = "http://api.vk.com/method/wall.get?{$id}&filter=owner$count={$this->count}";
+		$url = "http://api.vk.com/method/wall.get?{$id}&filter=owner&count={$this->count}";
+		$vk_posts = wp_remote_get($url);
+		$vk_posts = json_decode($vk_posts['body']);
+
+		if(isset($vk_posts->error)) return false;
+
+		$html  = '<div class="awp-vk">';
+			foreach ( $vk_posts->response as $item )
+			{
+				if( !empty( $item->text ))
+				{
+					$html .= "<div><a href='https://vk.com/{$this->title}'>{$item->text}</div>";
+				}
+				elseif( !empty( $item->attachment->photo->src_small ))
+				{
+					$html .= "<div><a href='https://vk.com/{$this->title}'><img src='{$tem->attachment->photo->src_small}'' alt='' /></div>";
+				}
+			}
+		$html .= '</div>';
+
+		return $html;
 	}
 }
