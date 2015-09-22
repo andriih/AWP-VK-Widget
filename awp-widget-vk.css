@@ -1,0 +1,21 @@
+.awp-vk{
+	border: 1px dotted #ccc;
+	padding: 10px;
+	background: #fdfdfd;
+	line-height: 1.5;
+}
+
+.awp-vk div{
+	margin: 10px 0;
+	padding: 0 0 10px 0;
+	border-bottom: 1px solid #ccc;
+	word-wrap: break-word;
+}
+.awp-vk div:last-child{
+	border-bottom: none;
+}
+
+.awp-vk img{
+	display: block;
+	margin: auto;
+}

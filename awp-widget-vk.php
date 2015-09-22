@@ -9,6 +9,12 @@ Author URI: Andrii Hnatyshyn
 */
 
 add_action( 'widgets_init' , 'awp_vk' );
+add_action( 'wp_enqueue_scripts' , 'awp_styles_scripts' );
+
+function awp_styles_scripts ()
+{
+	wp_enqueue_style('awp-style' , plugins_url( 'awp-widget-vk.css' ,__FILE__));
+}
 
 function awp_vk ()
 {
