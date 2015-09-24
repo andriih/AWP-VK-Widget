@@ -35,6 +35,35 @@ class AWP_Vk extends WP_Widget
 		return parent::__construct('awp_vk','AWP VK Widget',$args);
 	}
 
+	function form ($instance)
+	{
+		$title = '';
+		$count = '';
+		extract($instance);
+		$title = !empty($title) ? esc_attr($title) : '';
+		$count = !isset($count) ? $count : 3 ;
+		//var_dump($instance);
+		?>
+
+			<p>
+				<label for="<?php echo $this->get_field_id('title'); ?>">VK page (ID or short adress):</label>
+				<input type = "text" class="widefat"
+					   name = "<?php echo $this->get_field_name('title'); ?>" 
+					   id   = "<?php echo $this->get_field_id('title'); ?>" 
+					   value= "<?php echo $title; ?>"></input>
+			</p>
+
+			<p>
+				<label for="<?php echo $this->get_field_id('count'); ?>">VK pages count:</label>
+				<input type = "text" class="widefat"
+					   name = "<?php echo $this->get_field_name('count'); ?>" 
+					   id   = "<?php echo $this->get_field_id('count'); ?>" 
+					   value= "<?php echo $count; ?>"></input>
+			</p>
+
+		<?php
+	}
+
 	function widget ($args , $instance)
 	{
 		extract($args);
@@ -46,7 +75,28 @@ class AWP_Vk extends WP_Widget
 		$this->count = $count;
 
 		$data = $this->awp_get_posts_vk();
-		echo($data);
+
+		if ($data === false)
+		{
+			return $data = "ERROR!!!";
+		}
+		elseif(empty($data))
+		{
+			return $data = 'No posts on the page';
+		}
+
+		echo $before_widget;
+		echo $before_title.'Posts from the wall {$title}'.$after_title;
+		echo $data;
+		echo $after_widget;	
+	}
+
+	function update ($old_instance,$new_instance)
+	{
+		$new_instance['title'] = !empty($new_instance['title']) ? strip_tags($new_instance['title']) : '';
+		$new_instance['count'] = ( (int)$new_instance['count']) ? $new_instance['count'] : 5;
+
+		return  $new_instance;
 	}
 
 	private function awp_get_posts_vk()
